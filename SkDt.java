@@ -15,6 +15,7 @@ public class SkDt {
 		
 	public static void main(String[] args) throws NumberFormatException, IOException
 	{
+		
 		for(int i=0;i<256;i++)
 			for(int j=0;j<256;j++)
 				for(int k=0;k<256;k++)
@@ -22,7 +23,7 @@ public class SkDt {
 					skin[i][j][k]=0;
 					nskin[i][j][k]=0;
 				}
-		dataReader();
+		//dataReader();
 		/*for(int i=0;i<256;i++)
 			for(int j=0;j<256;j++)
 				for(int k=0;k<256;k++)
@@ -30,7 +31,7 @@ public class SkDt {
 					System.out.println(i+" "+j+" "+k+" "+skin[i][j][k]+" " +nskin[i][j][k]);	
 				}
 */
-		addProbability();
+		//addProbability();
 		maskImage();
 					
 	}
@@ -40,12 +41,36 @@ public class SkDt {
 		int rgb = myWhite.getRGB();
 		System.out.println(red+" "+green+" "+blue+" "+prob[red][green][blue]);
 		
-		if(prob[red][green][blue]<=.1) outImage.setRGB(w, h, rgb);
+		if(prob[red][green][blue]<=.3) outImage.setRGB(w, h, rgb);
 			
 		
 	}
 	public static void maskImage() throws IOException
 	{
+
+		File file= new File("C:\\Users\\Rakib bhai\\eclipse-workspace\\SkinDetection\\ratio2.txt");
+		BufferedReader br =new BufferedReader(new FileReader(file));
+		String st;
+		
+		while((st=br.readLine())!= null)
+		{
+			
+			String[] s=st.split(" ");
+			//System.out.println(j+"  "+s);
+			String s1 = null,s2 = null,s3 = null,s4 = null;
+			
+			int attr1 =Integer.parseInt(s[0]);
+			int attr2 =Integer.parseInt(s[1]);
+			int attr3 =Integer.parseInt(s[2]);
+			double classs =Double.parseDouble(s[3]);
+			prob[attr1][attr2][attr3]=classs;
+			//System.out.println(classs);
+			/*
+			if(classs==1) skin[attr1][attr2][attr3]++;
+			else nskin[attr1][attr2][attr3]++;*/
+			
+		}
+		
 		BufferedImage inpImage=null;
 		inpImage=ImageIO.read(new File("F:\\WEB 503\\HTML\\pic2.jpg"));
 		BufferedImage outImage=null;
@@ -67,7 +92,7 @@ public class SkDt {
 				blue=(pix)& 0xff;
 				Color myWhite = new Color(255, 255, 255); // Color white
 				int rgb = myWhite.getRGB();
-				if(prob[red][gree][blue]<=.4) inpImage.setRGB(i, j, rgb);
+				if(prob[red][gree][blue]<=.34) inpImage.setRGB(i, j, rgb);
 				//setPixel(red, gree, blue, i, j,outImage);
 			}
 		
@@ -75,8 +100,13 @@ public class SkDt {
 		
 	}
 	
-	public static void addProbability()
+	public static void addProbability() throws IOException
 	{
+		String fileName="ratio2.txt";
+		FileWriter fw= new FileWriter(fileName,true);
+		//fw.write(s);
+		//fw.close();
+		String s=null;
 		for(int i=0;i<256;i++)
 		for(int j=0;j<256;j++)
 			for(int k=0;k<256;k++)
@@ -84,21 +114,24 @@ public class SkDt {
 				if(nskin[i][j][k]==0) nskin[i][j][k]=1;
 				
 				prob[i][j][k]=(double)skin[i][j][k]/nskin[i][j][k];
+				s=i+" "+j+" "+k+" "+prob[i][j][k]+System.lineSeparator();
+				fw.write(s);
 				//System.out.println(prob[i][j][k]);
 			}
+		fw.close();
 	}
 	
 	public static void  dataReader() throws NumberFormatException, IOException
 	{
 		
-		File file= new File("C:\\Users\\Rakib bhai\\eclipse-workspace\\SkinDetection\\skinRGB.txt");
+		File file= new File("F:\\db\\skinRGB.txt");
 		BufferedReader br =new BufferedReader(new FileReader(file));
 		String st;
 		
 		while((st=br.readLine())!= null)
 		{
 			
-			String[] s=st.split(",");
+			String[] s=st.split(" ");
 			//System.out.println(j+"  "+s);
 			String s1 = null,s2 = null,s3 = null,s4 = null;
 			

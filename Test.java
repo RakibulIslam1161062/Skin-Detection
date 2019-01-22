@@ -74,13 +74,13 @@ public class Test {
 			red2=redValue(pixel2);
 			green2=greenValue(pixel2);
 			blue2=blueValue(pixel2);
-			s=red2+","+green2+","+blue2+","+"2"+System.lineSeparator();
+			s=red2+" "+green2+" "+blue2+" "+"2"+System.lineSeparator();
 			fileWrite(s);
 		}
 			
 		else
 			{
-				s=red+","+green+","+blue+","+"1"+System.lineSeparator();
+				s=red+" "+green+" "+blue+" "+"1"+System.lineSeparator();
 				//System.out.println(s);
 				fileWrite(s);
 			}
